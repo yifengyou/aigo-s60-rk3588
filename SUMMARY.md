@@ -1,5 +1,6 @@
 # Summary
 
 * [Introduction](README.md)
-* [基本信息](docs/基本信息.md)
+* [硬件规格](docs/硬件规格.md)
+
 
