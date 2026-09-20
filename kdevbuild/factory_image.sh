@@ -128,6 +128,18 @@ mkdir -p ${WORKDIR}/rockdev_img_tmp/RKDevTool-v3.19-aigo-s60/Image/
 
 cp -a ${WORKDIR}/rockdev/rootfs.img ${WORKDIR}/rockdev_img_tmp/RKDevTool-v3.19-aigo-s60/Image/
 
+cp -a ${WORKDIR}/img/factory-official-image/fulldisk/partitions/0.uboot.img \
+  ${WORKDIR}/rockdev_img_tmp/RKDevTool-v3.19-aigo-s60/Image/uboot.img
+
+cp -a ${WORKDIR}/img/factory-official-image/fulldisk/partitions/1.misc.img \
+  ${WORKDIR}/rockdev_img_tmp/RKDevTool-v3.19-aigo-s60/Image/misc.img
+
+cp -a ${WORKDIR}/img/factory-official-image/fulldisk/partitions/2.boot.img \
+  ${WORKDIR}/rockdev_img_tmp/RKDevTool-v3.19-aigo-s60/Image/boot.img
+
+tar -xvf ${WORKDIR}/img/factory-official-image/fulldisk/partitions/recovery.tar.gz
+cp -a recovery.img ${WORKDIR}/rockdev_img_tmp/RKDevTool-v3.19-aigo-s60/Image/recovery.img
+
 cd ${WORKDIR}/rockdev_img_tmp/
 rar a ${WORKDIR}/release/${BUILD_TAG} RKDevTool-v3.19-aigo-s60
 cd ${WORKDIR}/release/
