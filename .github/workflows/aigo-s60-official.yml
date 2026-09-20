@@ -319,13 +319,13 @@ jobs:
       - name: Upload Image to Release
         uses: ncipollo/release-action@main
         with:
-          tag: factory_image
+          tag: aigo_s60_image
           artifacts: /builder/release/*
           allowUpdates: true
           removeArtifacts: false
           replacesArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
+          body: | # aigo s60 rk3588 (official kernel)
 
             ## 免责声明
 
