@@ -328,6 +328,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: | # aigo s60 rk3588 (official kernel)
 
+            ## 刷写指引
+
+            1. 机器带锁！谨慎操作！
+            2. 不得刷写miniloader、uboot、recovery、boot分区
+            3. 不得修改分区表
+            4. 只能刷写rootfs、userdata分区
+            5. RKDevTool需要手动勾选“按地址强制写”选项
+
             ## 免责声明
 
             - **按原样提供**：镜像不作任何保证，使用风险自负
