@@ -5,6 +5,20 @@
 ![](./images/18695206391300.jpeg)
 
 
+## 基本信息
+
+| 外设类别 | 外设名称 | 接口/总线 | 芯片/规格 | 状态 | 功能说明 |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **存储** | eMMC | SDHCI (mmc0) | 板载闪存 | ✅ 启用 | 系统启动与核心数据存储 |
+| **存储** | SATA | SATA 3.0 ×3 | sata0/1/2 | ✅ 启用 | NVR 核心硬盘接口，支持多盘位录像存储 |
+| **网络** | 千兆以太网 | RGMII (GMAC0/1) | Fixed-link 1000M | ✅ 启用 | 双千兆网口，下联交换机管理多路 IPC 视频流 |
+| **USB** | USB 3.0 OTG | DWC3 | Type-C / USB-A | ✅ 启用 | 支持 Host/Device 模式切换及高速数据传输 |
+| **USB** | USB 3.0 Host | DWC3 | USB-A | ✅ 启用 | 纯主机模式，用于外接高速设备 |
+| **USB** | USB 2.0 Host | EHCI/OHCI ×2 | USB-A | ✅ 启用 | 兼容低速外设（键鼠、U盘等） |
+| **USB** | Type-C PD | I2C6 | FUSB302 | ✅ 启用 | USB-C 协议芯片，支持 PD 快充与 DP AltMode 视频输出 |
+| **扩展** | PCIe 3.0 | PCIe 3.0 x4 | RC Mode | ✅ 启用 | 高速扩展槽，可接 AI 加速卡或 NVMe SSD |
+| **调试** | 串口控制台 | UART2 (FIQ) | Debug Serial | ✅ 启用 | 内核调试终端 (ttyFIQ0, 1500000bps) |
+
 ## 目录
 
 * [硬件规格](docs/硬件规格.md)
