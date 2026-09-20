@@ -89,6 +89,7 @@ if [ -d img/factory-official-image/fulldisk/rockchip-test ]; then
 fi
 # update modules
 if [ -d img/factory-official-image/fulldisk/modules ]; then
+  mkdir -p /mnt/lib/modules/
   cp -a img/factory-official-image/fulldisk/modules/* /mnt/lib/modules/
   sync
 fi
