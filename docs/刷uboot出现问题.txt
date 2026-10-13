@@ -1,0 +1,152 @@
+
+A/B: no bootable slot
+SPL: failed to boot from all boot devices
+### ERROR ### Please RESET the board ###
+# Reset the board to bootrom #
+DDR 3488111f83 cym 24/04/12-12:49:26,fwver: v1.17
+LPDDR4X, 2112MHz
+channel[0] BW=16 Col=10 Bk=8 CS0 Row=16 CS1 Row=16 CS=2 Die BW=16 Size=2048MB
+channel[1] BW=16 Col=10 Bk=8 CS0 Row=16 CS1 Row=16 CS=2 Die BW=16 Size=2048MB
+channel[2] BW=16 Col=10 Bk=8 CS0 Row=16 CS1 Row=16 CS=2 Die BW=16 Size=2048MB
+channel[3] BW=16 Col=10 Bk=8 CS0 Row=16 CS1 Row=16 CS=2 Die BW=16 Size=2048MB
+Manufacturer ID:0x1
+CH0 RX Vref:25.8%, TX Vref:20.8%,21.8%DQ rds:
+h0 l1, h0 l4, h1 l0, h0 l0, h7 l0, h0 l1, h3 l0, h0 l1,
+h0 l1, h2 l0, h0 l0, h0 l0, h0 l0, h0 l0, h0 l1, h0 l0,
+
+CH1 RX Vref:26.3%, TX Vref:23.8%,23.8%DQ rds:
+h1 l0, h0 l1, h1 l0, h0 l1, h1 l0, h1 l0, h0 l0, h2 l0,
+h0 l0, h1 l0, h0 l0, h0 l0, h0 l0, h0 l0, h0 l1, h0 l1,
+
+CH2 RX Vref:27.9%, TX Vref:23.8%,22.8%DQ rds:
+h2 l0, h2 l0, h1 l0, h5 l0, h0 l0, h2 l0, h0 l0, h0 l0,
+h7 l0, h3 l0, h3 l0, h1 l0, h0 l0, h0 l0, h2 l0, h2 l0,
+
+CH3 RX Vref:28.5%, TX Vref:21.8%,21.8%DQ rds:
+h2 l0, h2 l0, h3 l0, h3 l0, h2 l0, h1 l0, h0 l0, h1 l0,
+h4 l0, h1 l0, h1 l0, h1 l0, h0 l0, h2 l0, h0 l0, h0 l0,
+
+stride=0x2, ddr_config=0x4
+hash ch_mask0-1 0x20 0x40, bank_mask0-3 0xa00 0x1400 0x2800 0x0, rank_mask0 0x401000
+change to F1: 528MHz
+change to F2: 1068MHz
+change to F3: 1560MHz
+change to F0: 2112MHz
+out
+U-Boot SPL board init
+U-Boot SPL 2017.09 (May 08 2025 - 18:58:22)
+sfc cmd=9fH(6BH-x4)
+unknown raw ID 0 0 0
+unrecognized JEDEC id bytes: 00, 00, 00
+Trying to boot from MMC2
+MMC: no card present
+mmc_init: -123, time 0
+spl: mmc init failed with error: -123
+Trying to boot from MMC1
+No bootable slots found, use lastboot.
+
+
+
+Trying fit image at 0x4000 sector
+## Verified-boot: 1
+sha256,rsa2048:dev## Verified-boot: 1
+padding_pss_verify: invalid pss padding (0xbc is missing)
+## Verified-boot: 1
+padding_pss_verify: invalid pss padding (0xbc is missing)
+-  error!
+Verification failed for '' hash node in 'conf' config node
+Failed to verify required signature 'key-dev'
+fit verify configure failed, ret=-1
+Trying fit image at 0x5000 sector
+## Verified-boot: 1
+sha256,rsa2048:dev## Verified-boot: 1
++
+## Checking atf-1 0x00040000 (gzip @0x00240000) ... sha256(19ebbe6f2f...) + sha256(64122e141b...) + OK
+## Checking uboot 0x00200000 (gzip @0x00400000) ... sha256(6390a096b1...) + sha256(046d2945e1...) + OK
+## Checking fdt 0x00349710 ... sha256 Bad hash: 1048fc333e089a87f8ca27a26bdc743fe9dc465e2303bd818885a3f0481ad556
+ error!
+Bad hash value for 'hash' hash node in 'fdt' image node
+A/B: no bootable slot
+
+
+
+
+Trying fit image at 0x4000 sector
+## Verified-boot: 1
+sha256,rsa2048:dev## Verified-boot: 1
+padding_pss_verify: invalid pss padding (0xbc is missing)
+## Verified-boot: 1
+padding_pss_verify: invalid pss padding (0xbc is missing)
+-  error!
+Verification failed for '' hash node in 'conf' config node
+Failed to verify required signature 'key-dev'
+fit verify configure failed, ret=-1
+Trying fit image at 0x5000 sector
+## Verified-boot: 1
+sha256,rsa2048:dev## Verified-boot: 1
++
+## Checking atf-1 0x00040000 (gzip @0x00240000) ... sha256(19ebbe6f2f...) + sha256(64122e141b...) + OK
+## Checking uboot 0x00200000 (gzip @0x00400000) ... sha256(6390a096b1...) + sha256(046d2945e1...) + OK
+## Checking fdt 0x00349710 ... sha256 Bad hash: 1048fc333e089a87f8ca27a26bdc743fe9dc465e2303bd818885a3f0481ad556
+ error!
+Bad hash value for 'hash' hash node in 'fdt' image node
+A/B: no bootable slot
+
+
+
+
+SPL: failed to boot from all boot devices
+### ERROR ### Please RESET the board ###
+# Reset the board to bootrom #
+
+
+
+# binwalk 0.uboot.img 
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             Flattened device tree, size: 3584 bytes, version: 17
+4608          0x1200          gzip compressed data, maximum compression, has original file name: "u-boot-nodtb.bin", from Unix, last modified: 2025-05-08 10:58:24
+594432        0x91200         gzip compressed data, maximum compression, has original file name: "bl31_0x00040000.bin", from Unix, last modified: 2025-05-08 10:58:26
+726016        0xB1400         gzip compressed data, maximum compression, has original file name: "tee.bin", from Unix, last modified: 2025-05-08 10:58:25
+954880        0xE9200         Flattened device tree, size: 11939 bytes, version: 17
+
+
+2097152       0x200000        Flattened device tree, size: 3584 bytes, version: 17
+2101760       0x201200        gzip compressed data, maximum compression, has original file name: "u-boot-nodtb.bin", from Unix, last modified: 2025-05-08 10:58:24
+2691584       0x291200        gzip compressed data, maximum compression, has original file name: "bl31_0x00040000.bin", from Unix, last modified: 2025-05-08 10:58:26
+2823168       0x2B1400        gzip compressed data, maximum compression, has original file name: "tee.bin", from Unix, last modified: 2025-05-08 10:58:25
+3052032       0x2E9200        Flattened device tree, size: 11939 bytes, version: 17
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
