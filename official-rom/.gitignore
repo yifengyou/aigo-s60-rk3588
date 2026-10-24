@@ -1,0 +1,10 @@
+backup.7z
+backup.img
+full-disk-backup.7z
+3.recovery.img
+4.backup.img
+5.rootfs.img
+6.oem.img
+7.userdata.img
+rootfs
+userdata
