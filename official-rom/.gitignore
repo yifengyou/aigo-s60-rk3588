@@ -8,3 +8,6 @@ full-disk-backup.7z
 7.userdata.img
 rootfs
 userdata
+2.boot.img
+3.recovery.img
+5.rootfs.img
