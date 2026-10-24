@@ -2,3 +2,6 @@ deprecated
 *.git
 hack-boot
 破解*
+secret
+/hack
+

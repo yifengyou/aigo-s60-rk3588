@@ -1,0 +1,7 @@
+NAME=Buildroot
+VERSION=-g9a6c38477-dirty
+ID=buildroot
+VERSION_ID=2024.02
+PRETTY_NAME="Buildroot 2024.02"
+ID_LIKE="recovery"
+RK_BUILD_INFO="lunzn@lunznubuntu Thu May  8 19:13:53 CST 2025"
