@@ -412,8 +412,57 @@ static int rk_dwmac_fix_reset(struct stmmac_priv *priv)
 &gmac1_mtl_tx_setup { snps,tx-queues-to-use = <1>; };
 ```
 
-#### 端口自动枚举
-**不要**在 port 节点中写 `label = "eth2"` 之类的固定名，否则两棵 DSA 树的端口会撞名 (-EEXIST)。去掉 `label` 后内核自动按枚举顺序命名：GMAC master 先得 `eth0`/`eth1`，switch0 的 slave 得 `eth2`–`eth6`，switch1 的 slave 得 `eth7`–`eth11`。
+#### 端口命名与 MAC 地址
+**GMAC master** 通过 DT `label` 属性命名为 `end0`/`end1`（与官方 BSP 一致），避免占用 `eth0`/`eth1`：
+
+```dts
+&gmac0 {
+    label = "end0";
+    local-mac-address = [02 00 00 00 00 01];
+    /* ... */
+};
+
+&gmac1 {
+    label = "end1";
+    local-mac-address = [02 00 00 00 00 02];
+    /* ... */
+};
+```
+
+stmmac 驱动在 `__stmmac_dvr_probe()` 中读取 `label` 属性并 `strscpy(ndev->name, devname)`，直接设置 netdev 名字。
+
+**DSA slave** 端口用 `label` 固定命名 `eth2`–`eth11`（GMAC 改叫 end0/end1 后不再冲突），每个端口配独立 MAC：
+
+```dts
+port@0 {
+    reg = <0>;
+    label = "eth2";
+    local-mac-address = [02 00 00 00 00 03];
+    phy-handle = <&sw0_phy0>;
+};
+/* ... eth3-eth11 依次类推 ... */
+```
+
+DSA 框架在 `dsa_port_parse_of()` 中读取 `label` 属性作为端口名；`of_get_mac_address()` 读取 `local-mac-address` 设置 MAC。如果没有 `local-mac-address`，slave 继承 master 的 MAC。
+
+**MAC 地址规划**（`02:` 前缀 = 本地管理地址 LAA，不与 IEEE 注册厂商冲突）：
+
+| 接口 | MAC |
+|------|-----|
+| end0 (gmac0) | 02:00:00:00:00:01 |
+| end1 (gmac1) | 02:00:00:00:00:02 |
+| eth2 (sw0 port0) | 02:00:00:00:00:03 |
+| eth3 (sw0 port1) | 02:00:00:00:00:04 |
+| eth4 (sw0 port2) | 02:00:00:00:00:05 |
+| eth5 (sw0 port3) | 02:00:00:00:00:06 |
+| eth6 (sw0 port4) | 02:00:00:00:00:07 |
+| eth7 (sw1 port0) | 02:00:00:00:00:08 |
+| eth8 (sw1 port1) | 02:00:00:00:00:09 |
+| eth9 (sw1 port2) | 02:00:00:00:00:0a |
+| eth10 (sw1 port3) | 02:00:00:00:00:0b |
+| eth11 (sw1 port4) | 02:00:00:00:00:0c |
+
+> **注意**: rootfs 中 `/etc/dhcpcd.conf` 和 `/etc/network/interfaces` 需同步更新：`denyinterfaces` 和 `iface` 行中的 `eth0`/`eth1` 要改成 `end0`/`end1`。
 
 ---
 
@@ -672,7 +721,9 @@ ssh root@box 'cat > /root/rdreg' < rdreg
 - [ ] **早期 RGMII 配置**: 在 `rtl8365mb_setup()` 中配置 CPU 口 RGMII + force-link，按 §4.5
 - [ ] **CHIP_DEBUG 寄存器**: 按 extint id 写对应寄存器，按 §4.9
 - [ ] **MTL 队列**: 覆盖为 1 个队列，按 §4.8
-- [ ] **端口命名**: 去掉 `label` 属性让内核自动枚举，按 §4.8
+- [ ] **端口命名**: GMAC 加 `label = "end0"/"end1"`，DSA slave 加 `label = "eth2"–"eth11"`，按 §4.8
+- [ ] **MAC 地址**: GMAC 和 DSA slave 均加 `local-mac-address`，用 `02:` 前缀本地管理地址，按 §4.8
+- [ ] **rootfs 配置**: `/etc/dhcpcd.conf` 和 `/etc/network/interfaces` 中 `eth0/eth1` → `end0/end1`
 - [ ] **compatible**: 在 `rtl8365mb_of_match[]` 加 `realtek,rtl8367rb` / `realtek,rtl8367rb-vb`
 - [ ] **端口上限**: `RTL8365MB_MAX_NUM_PORTS` ≥ 20
 - [ ] **cmdline**: 加 `irqchip.gicv3_pseudo_nmi=0 irqchip.gicv3_nolpi=1`
@@ -684,22 +735,22 @@ ssh root@box 'cat > /root/rdreg' < rdreg
 
 ```
 lo          UNKNOWN   127.0.0.1/8
-eth0        UP        (DSA master, switch0, 无 IP)
-eth1        UP        (DSA master, switch1, 无 IP)
-eth2@eth0   LOWERLAYERDOWN
-eth3@eth0   LOWERLAYERDOWN
-eth4@eth0   UP        192.168.33.40/24   ← DHCP OK
-eth5@eth0   LOWERLAYERDOWN
-eth6@eth0   DOWN
-eth7@eth1   LOWERLAYERDOWN
-eth8@eth1   LOWERLAYERDOWN
-eth9@eth1   LOWERLAYERDOWN
-eth10@eth1  DOWN
-eth11@eth1  UP        192.168.33.42/24   ← DHCP OK
+end0        UP        (DSA master, switch1, 无 IP, MAC 02:00:00:00:00:01)
+end1        UP        (DSA master, switch0, 无 IP, MAC 02:00:00:00:00:02)
+eth2@end1   LOWERLAYERDOWN   (MAC 02:00:00:00:00:03)
+eth3@end1   LOWERLAYERDOWN   (MAC 02:00:00:00:00:04)
+eth4@end1   UP        192.168.33.40/24   ← DHCP OK
+eth5@end1   LOWERLAYERDOWN   (MAC 02:00:00:00:00:06)
+eth6@end1   DOWN             (MAC 02:00:00:00:00:07)
+eth7@end0   LOWERLAYERDOWN   (MAC 02:00:00:00:00:08)
+eth8@end0   LOWERLAYERDOWN   (MAC 02:00:00:00:00:09)
+eth9@end0   LOWERLAYERDOWN   (MAC 02:00:00:00:00:0a)
+eth10@end0  DOWN             (MAC 02:00:00:00:00:0b)
+eth11@end0  UP        192.168.33.42/24   ← DHCP OK (MAC 02:00:00:00:00:0c)
 ```
 
-- 两个 GMAC master (eth0/eth1) 均 UP
-- 10 个用户端口 (eth2-eth11) 全部枚举
+- 两个 GMAC master 命名为 **end0/end1**（与官方 BSP 一致），不占用 ethN 命名空间
+- 10 个用户端口 (eth2-eth11) 固定命名 + 固定 MAC，跨重启稳定
 - 连线的端口 (eth4, eth11) 均获得 DHCP IP，可上网
 - 零 SFT_RESET 错误，零 "could not find user" 错误
 - 两台机器 php_grf 寄存器值与官方 BSP 完全一致
