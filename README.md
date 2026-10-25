@@ -26,6 +26,16 @@
 * [绕过boot-kexec分析](docs/绕过boot-kexec分析.md)
 * [绕过boot-booti分析](docs/绕过boot-bootti分析.md)
 
+
+
+## 调试信息
+
+![](./images/54374114439000.png)
+
+* 重置键就是电源复位
+* 刷机键，如果有接typec就是进入loader模式。如果没有接typec就是进入recovery模式
+
+
 ## 免责申明
 
 - 本仓库所提供的内容均基于公开、合法渠道整理，仅供用户参考与学习之用。
